@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InsureFlow — Parametric Insurance on Base L2
 
-## Getting Started
+Embeddable parametric insurance for flight delays, rain events, and shipping delays. Pay premiums, get auto-paid when triggers fire. No claims. No paperwork.
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend**: Next.js 16, Tailwind v4, TypeScript, lucide-react
+- **Contracts**: Solidity 0.8.20, OpenZeppelin, Hardhat v3
+- **Backend**: Express, Prisma, SQLite, node-cron
+- **Chain**: Base Sepolia (testnet)
+
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 — demo works immediately with localStorage (no wallet needed).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For on-chain transactions on Base Sepolia, set up `.env.local` with deployed contract addresses and connect MetaMask.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Products
 
-## Learn More
+- **Flight Delay** — delayed 2+ hours → instant payout
+- **Rain Event** — rainfall exceeds threshold → instant payout
+- **Shipping Delay** — delayed 3+ days → instant payout
 
-To learn more about Next.js, take a look at the following resources:
+Premium is 25% of coverage across all products. Split: 70% LP pool, 20% protocol, 10% reserves.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+insureflow/
+├── src/                # Next.js frontend
+│   ├── app/            # Pages
+│   ├── components/     # UI components
+│   └── config/         # Contracts config, demo store
+├── contracts/          # Solidity smart contracts
+├── backend/            # Express + Prisma server
+├── scripts/            # Deployment scripts
+└── docs/               # Architecture & flow docs
+```
 
-## Deploy on Vercel
+## Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [`PROJECT.md`](PROJECT.md) — full project overview
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system architecture
+- [`docs/CONTRACT-FLOW.md`](docs/CONTRACT-FLOW.md) — smart contract lifecycle
+- [`docs/USER-FLOW.md`](docs/USER-FLOW.md) — user journey

@@ -30,8 +30,30 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# hardhat build artifacts
+/artifacts/
+/cache/
+
+# env files (secrets, never commit)
+.env
+.env.local
+.env.*.local
+
+# sol contracts (not used by frontend build)
+/contracts/
+/hardhat.config.ts
+/scripts/
+
+# backend (separate Express server, not needed for Vercel)
+/backend/
+
+# root docs (not needed for Vercel build)
+/COMPLETE-DOCS.md
+/PROJECT.md
+/RIALO_MIGRATION.md
+
+# user-facing docs
+/docs/
 
 # vercel
 .vercel

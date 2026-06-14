@@ -1,0 +1,13 @@
+export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
+
+export const CONTRACTS = {
+  STABLECOIN: process.env.NEXT_PUBLIC_STABLECOIN_ADDRESS || "",
+  PREMIUM_POOL: process.env.NEXT_PUBLIC_PREMIUM_POOL_ADDRESS || "",
+  POLICY_ESCROW: process.env.NEXT_PUBLIC_POLICY_ESCROW_ADDRESS || "",
+};
+
+export const DEMO_VALUES = {
+  LP_POOL_BALANCE: 70000,
+  PROTOCOL_FEES: 20000,
+  RESERVES: 10000,
+};
