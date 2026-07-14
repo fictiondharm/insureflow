@@ -45,6 +45,7 @@ export default function PolicyDetailPage() {
   const [usdcBalance, setUsdcBalance] = useState<string | null>(null);
   const [balanceLoading, setBalanceLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
   const { address, isConnected } = useWallet();
 
   const store = loadStore();
@@ -132,6 +133,22 @@ export default function PolicyDetailPage() {
     setLocalPool(updated.pool);
     setSimulating(false);
     setSimulated(true);
+
+    const productNames: Record<string, string> = { flight: "Flight Delay", rain: "Rain", shipping: "Shipping Delay" };
+    const email = policy.email;
+    if (email) {
+      try {
+        const r = await fetch("/api/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, product: productNames[policy.type] || "Insurance", amount: policy.payout, policyId: id }),
+        });
+        const data = await r.json();
+        setEmailStatus(data.ok ? "sent" : data.note === "simulated" ? "simulated" : "error");
+      } catch {
+        setEmailStatus("error");
+      }
+    }
   };
 
   const eventLabel = policy.type === "flight" ? "Delay Detected" : policy.type === "rain" ? "Rain Detected" : "Delay Detected";
@@ -462,6 +479,15 @@ export default function PolicyDetailPage() {
                     : "LP Pool reduced by " + policy.payout + " USDC · " + (isConnected ? "Add the USDC token above to see your balance" : "Connect wallet to see your balance")}
                 </p>
               </div>
+            )}
+            {emailStatus === "sent" && (
+              <p className="text-center text-xs text-muted mt-2">Payout notification sent to {policy.email}</p>
+            )}
+            {emailStatus === "simulated" && (
+              <p className="text-center text-xs text-muted mt-2">Email notification skipped (no RESEND_API_KEY set)</p>
+            )}
+            {emailStatus === "error" && (
+              <p className="text-center text-xs text-coral mt-2">Failed to send email notification</p>
             )}
             <p className="text-center text-xs text-muted/50 mt-2">
               {isRealOnChain ? "Real on-chain transaction" : "Demo mode"}

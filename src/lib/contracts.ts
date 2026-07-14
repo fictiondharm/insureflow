@@ -111,6 +111,7 @@ export async function createPolicy(
     abi: POLICY_ESCROW_ABI,
     functionName: "createPolicy",
     args: [productType, payout, BigInt(eventDate), metadata],
+    gas: 500000n,
   });
 
   const receipt = await publicClient.waitForTransactionReceipt({ hash });
@@ -134,6 +135,7 @@ export async function settlePolicy(policyId: number, conditionMet: boolean): Pro
     abi: POLICY_ESCROW_ABI,
     functionName: "settlePayout",
     args: [BigInt(policyId), conditionMet],
+    gas: 500000n,
   });
   await publicClient.waitForTransactionReceipt({ hash });
   return hash;

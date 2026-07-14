@@ -94,6 +94,7 @@ export default function BuyPage() {
   const [txError, setTxError] = useState<string | null>(null);
   const [funding, setFunding] = useState(false);
   const [settling, setSettling] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   if (!product) {
     return (
@@ -143,7 +144,7 @@ export default function BuyPage() {
       setTxHash(hash);
       saveCreateTx(onChainId, hash);
 
-      const policy = demoBuyPolicy(PRODUCT_KEYS[product.productType] as "flight" | "rain" | "shipping", payoutHuman, hash, onChainId);
+      const policy = demoBuyPolicy(PRODUCT_KEYS[product.productType] as "flight" | "rain" | "shipping", payoutHuman, hash, onChainId, formData.email || undefined);
       setPurchasedId(policy.id);
       setPurchasedOnChainId(onChainId);
       setPaid(true);
@@ -160,6 +161,7 @@ export default function BuyPage() {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const dateStr = tomorrow.toISOString().split("T")[0];
     const demoData: Record<string, string> = {};
+    demoData.email = "demo@example.com";
     if (type === "flight") {
       demoData.airline = "American Airlines";
       demoData.flightNumber = "AA123";
@@ -195,6 +197,24 @@ export default function BuyPage() {
         if (purchasedId) demoSettlePolicy(purchasedId, true);
         const coverage = formData.coverage || "100";
         setSimResult("Event detected! Payout of $" + coverage + " USDC sent to your wallet.");
+      }
+      const email = formData.email;
+      if (email && purchasedId) {
+        const productName = productData[type as ProductKey]?.name || "Insurance";
+        const coverage = formData.coverage || "100";
+        try {
+          const r = await fetch("/api/notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, product: productName, amount: coverage, policyId: purchasedId }),
+          });
+          const data = await r.json();
+          setEmailStatus(data.ok ? "sent" : data.note === "simulated" ? "simulated" : "error");
+        } catch {
+          setEmailStatus("error");
+        }
+      } else if (formData.email && !purchasedId) {
+        setEmailStatus("no-policy");
       }
     } catch (err: any) {
       setSimResult("Settle failed: " + (err?.message || "Unknown error"));
@@ -249,6 +269,19 @@ export default function BuyPage() {
                   />
                 </div>
               ))}
+
+              <div>
+                <label className="block text-xs font-medium text-muted uppercase tracking-wider mb-1.5">
+                  Email for payout notification <span className="text-muted-light font-normal normal-case">(optional)</span>
+                </label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={formData.email || ""}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  className="input-journal"
+                />
+              </div>
 
               <div>
                 <label className="block text-xs font-medium text-muted uppercase tracking-wider mb-3">
@@ -515,9 +548,20 @@ export default function BuyPage() {
                 )}
 
                 {simResult && (
-                  <div className="bg-jade/5 border border-jade/20 p-3 flex items-center gap-2 text-sm text-jade">
-                    <PartyPopper className="w-4 h-4 shrink-0" />
-                    {simResult}
+                  <div className="bg-jade/5 border border-jade/20 p-3 text-sm text-jade">
+                    <div className="flex items-center gap-2">
+                      <PartyPopper className="w-4 h-4 shrink-0" />
+                      {simResult}
+                    </div>
+                    {emailStatus === "sent" && (
+                      <p className="text-xs text-muted mt-2">📧 Payout notification sent to {formData.email}</p>
+                    )}
+                    {emailStatus === "simulated" && (
+                      <p className="text-xs text-muted mt-2">📧 Email notification skipped (no RESEND_API_KEY set)</p>
+                    )}
+                    {emailStatus === "error" && (
+                      <p className="text-xs text-coral mt-2">📧 Failed to send email notification</p>
+                    )}
                   </div>
                 )}
 

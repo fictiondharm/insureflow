@@ -10,6 +10,7 @@ export interface DemoPolicy {
   payout: number;
   status: PolicyStatus;
   date: string;
+  email?: string;
   createTxHash?: string;
   payoutTxHash?: string;
   onChainId?: number;
@@ -62,7 +63,7 @@ function nextId(): string {
   return String(val);
 }
 
-export function demoBuyPolicy(type: ProductType, payout: number, createTxHash?: string, onChainId?: number): DemoPolicy {
+export function demoBuyPolicy(type: ProductType, payout: number, createTxHash?: string, onChainId?: number, email?: string): DemoPolicy {
   const premium = Math.round(payout * 0.25);
   const store = loadStore();
   const id = nextId();
@@ -82,7 +83,7 @@ export function demoBuyPolicy(type: ProductType, payout: number, createTxHash?: 
     id, type, title: titles[type], subtitle: subtitles[type],
     premium, payout, status: "active",
     date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-    createTxHash, onChainId,
+    email, createTxHash, onChainId,
   };
 
   store.pool.lpPool += Math.round(premium * 0.7);
