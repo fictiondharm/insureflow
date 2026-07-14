@@ -11,7 +11,7 @@ const products: Record<Product, {
   accent: string; border: string; bgRgb: string; animClass: string;
 }> = {
   flight: {
-    icon: Plane, label: "Flight Delay", desc: "2hr+ delay, instant payout",
+    icon: Plane, label: "Flight Delay", desc: "4hr+ delay, instant payout",
     amounts: [50, 100, 200, 500],
     accent: "text-coral", border: "border-coral/30", bgRgb: "232, 93, 58",
     animClass: "animate-fly-contained",

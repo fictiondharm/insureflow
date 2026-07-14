@@ -202,7 +202,7 @@ export default function DocsPage() {
                   Oracle Triggers Payout
                 </h3>
                 <p className="text-sm text-muted">
-                  If the trigger condition is met (e.g., flight delayed 2+
+                  If the trigger condition is met (e.g., flight delayed 4+
                   hours, rainfall exceeds threshold, shipping delayed 3+ days),
                   the oracle reports it on-chain. The smart contract
                   automatically sends your payout.

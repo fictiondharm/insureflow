@@ -31,7 +31,7 @@ const productData = {
   flight: {
     icon: Plane,
     name: "Flight Delay Insurance",
-    description: "Get paid automatically if your flight is delayed more than 2 hours.",
+    description: "Get paid automatically if your flight is delayed more than 4 hours.",
     accent: "text-coral",
     bg: "bg-coral/5 border-coral/20",
     Illustration: FlightCardIllus,

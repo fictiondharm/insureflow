@@ -16,7 +16,7 @@ export default function HeroSection() {
 
   const stats = [
     { value: "$2.4M+", label: "Active Coverage" },
-    { value: "4.2s", label: "Avg. Payout" },
+    { value: "< 1s", label: "Avg. Payout" },
     { value: "98.7%", label: "Payout Rate" },
     { value: "1,250+", label: "Users" },
   ];

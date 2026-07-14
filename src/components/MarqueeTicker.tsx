@@ -4,7 +4,7 @@ export default function MarqueeTicker() {
   const items = [
     { value: "2,847", label: "Active Policies" },
     { value: "$2.4M+", label: "Total Coverage" },
-    { value: "4.2s", label: "Avg. Payout" },
+    { value: "< 1s", label: "Avg. Payout" },
     { value: "98.7%", label: "Payout Rate" },
     { value: "1,250+", label: "Happy Users" },
   ];

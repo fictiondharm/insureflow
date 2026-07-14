@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const stats = [
   { label: "Active Policies", value: 2847, suffix: "", prefix: "", color: "bg-coral" },
   { label: "Total Coverage", value: 2.4, suffix: "M", prefix: "$", color: "bg-jade" },
-  { label: "Avg. Payout", value: 4.2, suffix: "s", prefix: "", color: "bg-amber" },
+  { label: "Avg. Payout", display: "< 1s", color: "bg-amber" },
   { label: "Payout Rate", value: 98.7, suffix: "%", prefix: "", color: "bg-coral" },
 ];
 
@@ -78,10 +78,14 @@ export default function LiveStats() {
                 <span className="text-[10px] text-muted uppercase tracking-[0.1em]">{stat.label}</span>
               </div>
               <p className="font-serif text-[clamp(2rem,4vw,3rem)] leading-none text-ink mb-2">
-                <AnimatedNumber target={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
+                {'display' in stat ? (
+                  <span>{stat.display}</span>
+                ) : (
+                  <AnimatedNumber target={stat.value!} suffix={stat.suffix!} prefix={stat.prefix!} />
+                )}
               </p>
               <div className="h-1 w-full bg-border/50 mt-2">
-                <div className={`h-full ${stat.color} transition-all duration-1000`} style={{ width: `${Math.min(100, (stat.value / 3000) * 100)}%` }} />
+                <div className={`h-full ${stat.color} transition-all duration-1000`} style={{ width: `${Math.min(100, (('value' in stat ? stat.value : 0) as number / 3000) * 100)}%` }} />
               </div>
             </div>
           ))}

@@ -7,7 +7,7 @@ import { HelpCircle, ChevronDown, ArrowRight } from "lucide-react";
 const faqs = [
   {
     q: "What is parametric insurance?",
-    a: "Parametric insurance pays out automatically when a predefined trigger event occurs — no claims process needed. For example, if your flight is delayed by 2+ hours, the smart contract checks the data from a trusted oracle and sends your payout instantly. No forms, no adjusters, no waiting.",
+    a: "Parametric insurance pays out automatically when a predefined trigger event occurs — no claims process needed. For example, if your flight is delayed by 4+ hours, the smart contract checks the data from a trusted oracle and sends your payout instantly. No forms, no adjusters, no waiting.",
   },
   {
     q: "How is the premium calculated?",
